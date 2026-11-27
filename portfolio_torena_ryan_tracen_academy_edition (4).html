@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTAnimators | Torena Ryan - Umamusume Video Editor Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Nunito & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;0,800;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1e293b;
+            background-color: #f0f9ff;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1, h2, h3, .font-game {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Lapisan Background per Bagian */
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        /* Soft Blur khusus latar Pengenalan (Tracen Academy) */
+        .bg-hero-blur {
+            filter: blur(5px);
+            transform: scale(1.04);
+        }
+
+        /* Panel Glassmorphism Khas UI Umamusume */
+        .uma-panel {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 3px solid #ffffff;
+            box-shadow: 0 12px 30px -6px rgba(14, 165, 233, 0.16), 0 0 0 1px rgba(56, 189, 248, 0.35);
+        }
+
+        /* Pola Garis Diagonal Halus ala Kartu Lisensi Game */
+        .uma-license-bg {
+            background-color: #ffffff;
+            background-image: repeating-linear-gradient(
+                -45deg,
+                rgba(240, 249, 255, 0.65),
+                rgba(240, 249, 255, 0.65) 12px,
+                rgba(255, 255, 255, 0.9) 12px,
+                rgba(255, 255, 255, 0.9) 24px
+            );
+        }
+
+        /* Tombol Taktil Gaya Game */
+        .uma-btn {
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+            box-shadow: 0 3px 0 rgba(15, 23, 42, 0.15);
+        }
+        .uma-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 rgba(15, 23, 42, 0.18);
+        }
+        .uma-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.15);
+        }
+
+        /* Kartu Karya ala Direktori Karakter Umamusume */
+        .uma-work-card {
+            background: #ffffff;
+            border-radius: 1.25rem;
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+            outline: 2px solid rgba(14, 165, 233, 0.25);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, outline-color 0.25s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .uma-work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 28px rgba(14, 165, 233, 0.22);
+            outline-color: #f59e0b;
+        }
+
+        /* Pita Label Kategori */
+        .uma-ribbon {
+            clip-path: polygon(0 0, 100% 0, 93% 50%, 100% 100%, 0 100%);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-300 selection:text-slate-900">
+
+    <!-- ===================================================================== -->
+    <!-- NAVBAR STICKY ATAS                                                    -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 w-full px-3 sm:px-6 pt-3 pb-2 pointer-events-none">
+        <nav class="max-w-6xl mx-auto uma-panel rounded-2xl px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 pointer-events-auto">
+            <!-- Brand & Identitas -->
+            <a href="#bagian-pengenalan" class="flex items-center gap-3 min-w-0 group">
+                <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center text-white shadow border-2 border-amber-300 group-hover:rotate-6 transition-transform">
+                    <i class="fa-solid fa-trophy text-amber-300 text-base"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                        <span class="font-game font-black text-base sm:text-lg text-slate-800 truncate">MTAnimators</span>
+                        <span class="hidden sm:inline-block text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400 text-slate-900 border border-amber-500">Tracen Div.</span>
+                    </div>
+                    <p class="text-[11px] sm:text-xs font-bold text-sky-600 truncate">Torena Ryan • Video Editor</p>
+                </div>
+            </a>
+
+            <!-- Navigasi & Tombol Trainer Mode -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                <a href="#bagian-pengenalan" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-id-card text-sky-500"></i>
+                    <span class="hidden sm:inline">Profil</span>
+                </a>
+                <a href="#bagian-karya" class="px-3 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-sky-50 hover:text-sky-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-film text-amber-500"></i>
+                    <span class="hidden sm:inline">Hasil Karya</span>
+                </a>
+
+                <!-- Tombol Login / Status Trainer Mode -->
+                <button id="trainerLockBtn" onclick="handleTrainerLockClick()" class="px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-700 border border-slate-300 transition cursor-pointer flex items-center gap-1.5">
+                    <i id="trainerLockIcon" class="fa-solid fa-lock text-slate-500"></i>
+                    <span id="trainerLockLabel">Trainer Login</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- KONTEN UTAMA (TERSTRUKTUR VERTIKAL 2 HALAMAN)                         -->
+    <!-- ===================================================================== -->
+    <main class="flex-grow w-full flex flex-col">
+
+        <!-- ================================================================= -->
+        <!-- HALAMAN 1: BAGIAN PENGENALAN & PROFIL TRAINER (LATAR BLUR HALUS)  -->
+        <!-- ================================================================= -->
+        <section id="bagian-pengenalan" class="relative w-full py-8 sm:py-14 px-3 sm:px-6 overflow-hidden bg-gradient-to-br from-sky-200 via-blue-100 to-amber-50">
+            <!-- Layer Background 1 (Tracen Academy - Soft Blur) -->
+            <div id="heroBgLayer" class="bg-layer bg-hero-blur opacity-0"></div>
+            <!-- Lapisan Pencahayaan Lembut agar Teks Kontras & Mudah Dibaca -->
+            <div class="absolute inset-0 bg-gradient-to-b from-white/40 via-sky-50/50 to-sky-100/75 z-0 pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-5xl mx-auto flex flex-col gap-4">
+
+                <!-- Bar Kontrol Background 1 (Hanya Muncul saat Trainer Mode Aktif) -->
+                <div id="heroBgControls" class="hidden w-full bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-sky-300 shadow-sm flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-school text-sky-500"></i>
+                        <span>Latar Pengenalan (Tracen Academy • Efek Soft Blur Otomatis)</span>
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <label class="uma-btn px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-extrabold cursor-pointer inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Upload Latar Intro</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'heroBg')">
+                        </label>
+                        <button id="removeHeroBgBtn" onclick="clearImageField('heroBg')" class="hidden px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold border border-red-200 cursor-pointer">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KARTU LISENSI RESMI TRAINER RYAN -->
+                <div class="uma-panel rounded-3xl overflow-hidden flex flex-col">
+                    <!-- Header Strip Kartu Lisensi -->
+                    <div class="bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 px-5 sm:px-8 py-3 flex flex-wrap items-center justify-between gap-2 text-white">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-300 animate-pulse"></span>
+                            <span class="font-game font-extrabold text-xs sm:text-sm tracking-widest uppercase">Tracen Academy • Official Trainer License</span>
+                        </div>
+                        <span id="statusBadge" class="text-[11px] font-bold bg-white/15 px-3 py-0.5 rounded-full border border-white/25">
+                            Public Showcase
+                        </span>
+                    </div>
+
+                    <!-- Isi Kartu Profil (2 Kolom di Desktop, 1 Kolom Rapi di Mobile) -->
+                    <div class="uma-license-bg p-5 sm:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+
+                        <!-- Kolom Kiri (4 kolom): Avatar Foto Profil Kosong / OC & Sosmed -->
+                        <div class="md:col-span-4 flex flex-col items-center text-center gap-4">
+                            <div class="relative group w-44 h-44 sm:w-52 sm:h-52">
+                                <!-- Bingkai Avatar -->
+                                <div class="w-full h-full rounded-3xl p-1.5 bg-gradient-to-b from-amber-300 via-amber-400 to-sky-400 shadow-lg">
+                                    <div id="avatarBox" class="w-full h-full rounded-2xl bg-slate-100 border-2 border-dashed border-sky-300 flex flex-col items-center justify-center text-slate-400 overflow-hidden">
+                                        <!-- Dirender oleh JS -->
+                                    </div>
+                                </div>
+
+                                <!-- Lencana Rank -->
+                                <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-slate-900 font-game font-black text-[11px] px-3.5 py-0.5 rounded-full border-2 border-white shadow">
+                                    ★ RANK S+ EDITOR
+                                </div>
+
+                                <!-- Kontrol Upload Avatar (Hanya Muncul di Trainer Mode) -->
+                                <div id="avatarControls" class="hidden absolute top-2 right-2 flex-col gap-1.5 z-10">
+                                    <label class="w-9 h-9 rounded-xl bg-sky-600 hover:bg-sky-700 text-white shadow-md border-2 border-white flex items-center justify-center cursor-pointer transition" title="Upload Foto Profil">
+                                        <i class="fa-solid fa-camera text-sm"></i>
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'avatar')">
+                                    </label>
+                                    <button id="removeAvatarBtn" onclick="clearImageField('avatar')" class="hidden w-9 h-9 rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-md border-2 border-white flex items-center justify-center cursor-pointer transition" title="Hapus Foto Profil">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Tombol Sosial Media Resmi -->
+                            <div class="w-full max-w-[220px] grid grid-cols-2 gap-2 pt-1">
+                                <a href="http://www.youtube.com/@Trainer-Ryan" target="_blank" rel="noopener noreferrer" class="uma-btn py-2 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-game font-extrabold text-xs flex items-center justify-center gap-1.5 border border-red-400">
+                                    <i class="fa-brands fa-youtube text-sm"></i>
+                                    <span>YouTube</span>
+                                </a>
+                                <a href="https://www.tiktok.com/@torena_ryan" target="_blank" rel="noopener noreferrer" class="uma-btn py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-game font-extrabold text-xs flex items-center justify-center gap-1.5 border border-slate-700">
+                                    <i class="fa-brands fa-tiktok text-sm"></i>
+                                    <span>TikTok</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Kolom Kanan (8 kolom): Nama, Slogan Utama, Bio & Statistik -->
+                        <div class="md:col-span-8 flex flex-col gap-4 text-center md:text-left">
+                            <div>
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 text-sky-700 border border-sky-200 text-xs font-extrabold">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                                    Short-Form Video Editor • 1+ Years Exp
+                                </span>
+                                <h1 class="font-game font-black text-3xl sm:text-4xl lg:text-5xl text-slate-900 mt-2 tracking-tight">
+                                    Torena Ryan <span class="text-sky-600 text-xl sm:text-2xl lg:text-3xl font-extrabold block sm:inline">(@MTAnimators)</span>
+                                </h1>
+                            </div>
+
+                            <!-- Kotak Slogan Resmi -->
+                            <div class="bg-gradient-to-r from-amber-50 via-yellow-50/80 to-white border-2 border-amber-300 rounded-2xl p-4 shadow-sm text-left relative">
+                                <div class="flex items-start gap-3">
+                                    <i class="fa-solid fa-quote-left text-amber-400 text-xl shrink-0 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-game font-extrabold italic text-base sm:text-lg text-slate-800 leading-snug">
+                                            "One of My Biggest Dream is Became The Best Trainer For Umamusume."
+                                        </p>
+                                        <p class="text-[11px] font-extrabold text-amber-700 uppercase tracking-wider mt-1.5">
+                                            — Torena Ryan • Tracen Academy Video Division
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi Singkat -->
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
+                        Ohayo minna! Saya <strong class="text-slate-800">Torena Ryan (MTAnimators)</strong>, seorang kreator video edit vertikal (<strong class="text-sky-600">YouTube Shorts & TikTok</strong>) dengan pengalaman lebih dari <strong class="text-slate-800">1 tahun</strong>. Saya berfokus meracik tren internet terkini, ritme musik cepat (<em>Phonk & Montage</em>), serta animasi dan editan berenergi tinggi bertema <strong class="text-amber-600">Umamusume: Pretty Derby</strong>.
+                    </p>
+
+                    <!-- Statistik Singkat -->
+                            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 pt-1">
+                                <div class="bg-white/90 border border-sky-200 rounded-2xl p-3 text-center shadow-sm">
+                                    <div class="text-[10px] sm:text-xs font-extrabold text-slate-400 uppercase">Pengalaman</div>
+                                    <div class="font-game font-black text-base sm:text-xl text-sky-600 mt-0.5">1+ Tahun</div>
+                                    <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500">Video Editing</div>
+                                </div>
+                                <div class="bg-white/90 border border-amber-200 rounded-2xl p-3 text-center shadow-sm">
+                                    <div class="text-[10px] sm:text-xs font-extrabold text-slate-400 uppercase">TikTok Likes</div>
+                                    <div class="font-game font-black text-base sm:text-xl text-amber-500 mt-0.5">47.8K+</div>
+                                    <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500">Total Apresiasi</div>
+                                </div>
+                                <div class="bg-white/90 border border-emerald-200 rounded-2xl p-3 text-center shadow-sm">
+                                    <div class="text-[10px] sm:text-xs font-extrabold text-slate-400 uppercase">Total Karya</div>
+                                    <div id="statTotalWorks" class="font-game font-black text-base sm:text-xl text-emerald-600 mt-0.5">0</div>
+                                    <div class="text-[10px] sm:text-[11px] font-semibold text-slate-500">Published Edits</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- PEMBATAS ARENA BALAP KHAS UMAMUSUME                               -->
+        <!-- ================================================================= -->
+        <div class="relative z-20 w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 border-y-4 border-white shadow-md py-3 px-4">
+            <div class="max-w-6xl mx-auto flex items-center justify-center gap-3 text-white font-game font-black text-xs sm:text-sm tracking-widest uppercase text-center">
+                <i class="fa-solid fa-flag-checkered text-amber-300"></i>
+                <span>TURF RACECOURSE • SHOWCASE DIRECTORY</span>
+                <i class="fa-solid fa-flag-checkered text-amber-300"></i>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- HALAMAN 2: HASIL KARYA & SHOWCASE (LATAR ARENA PACUAN JERNIH)     -->
+        <!-- ================================================================= -->
+        <section id="bagian-karya" class="relative w-full py-10 sm:py-14 px-3 sm:px-6 overflow-hidden bg-gradient-to-br from-emerald-100 via-teal-50 to-sky-100 flex-grow">
+            <!-- Layer Background 2 (Arena Pacuan - Crisp / Tanpa Blur) -->
+            <div id="galleryBgLayer" class="bg-layer opacity-0"></div>
+            <!-- Overlay Tipis agar Suasana Arena Segar namun Kartu Tetap Kontras -->
+            <div class="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-transparent to-slate-900/20 z-0 pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-6xl mx-auto flex flex-col gap-4">
+
+                <!-- Bar Kontrol Background 2 (Hanya Muncul saat Trainer Mode Aktif) -->
+                <div id="galleryBgControls" class="hidden w-full bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border-2 border-emerald-300 shadow-sm flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-panorama text-emerald-600"></i>
+                        <span>Latar Hasil Karya (Arena Pacuan / Racecourse)</span>
+                    </span>
+                    <div class="flex items-center gap-2">
+                        <label class="uma-btn px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold cursor-pointer inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Upload Latar Karya</span>
+                            <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'galleryBg')">
+                        </label>
+                        <button id="removeGalleryBgBtn" onclick="clearImageField('galleryBg')" class="hidden px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold border border-red-200 cursor-pointer">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PANEL UTAMA DIREKTORI KARYA (STRICT VERTICAL STACKING) -->
+                <div class="uma-panel rounded-3xl p-5 sm:p-8 flex flex-col gap-6 w-full">
+
+                    <!-- BARIS A: Judul Direktori & Tombol Aksi Trainer -->
+                    <div class="w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b-2 border-sky-100 pb-5">
+                        <div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="px-2.5 py-0.5 rounded-md bg-emerald-500 text-white font-game font-extrabold text-xs uppercase tracking-wider">Directory</span>
+                                <h2 class="font-game font-black text-2xl sm:text-3xl text-slate-800">Hasil Karya & Video Edits</h2>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+                                Koleksi video edit & animasi YouTube Shorts & TikTok resmi oleh Torena Ryan.
+                            </p>
+                        </div>
+
+                        <!-- Kontrol Pemilik (Hanya tampil saat Trainer Mode aktif) -->
+                        <div id="trainerActionToolbar" class="hidden flex-wrap items-center gap-2">
+                            <button onclick="openPostModal()" class="uma-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-game font-extrabold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-white cursor-pointer inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                <span>+ Post Karya</span>
+                            </button>
+                            <button onclick="openExportModal()" class="uma-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-game font-extrabold bg-gradient-to-r from-slate-800 to-slate-900 text-white border-2 border-white cursor-pointer inline-flex items-center gap-1.5">
+                                <i class="fa-brands fa-github text-amber-300"></i>
+                                <span>Simpan & Download index.html</span>
+                            </button>
+                            <button onclick="openPinModal('change')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition cursor-pointer inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-key text-amber-500"></i>
+                                <span>Ubah PIN</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BARIS B: Filter Kategori (Semua, Video Edit, Animation) & Pencarian -->
+                    <div class="w-full flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                            <button onclick="setCategoryFilter('All')" data-cat="All" class="cat-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold bg-sky-500 text-white shadow-sm transition cursor-pointer">
+                                Semua (<span id="countAll">0</span>)
+                            </button>
+                            <button onclick="setCategoryFilter('Video Edit')" data-cat="Video Edit" class="cat-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-sky-50 border border-slate-200 transition cursor-pointer">
+                                🎬 Video Edit
+                            </button>
+                            <button onclick="setCategoryFilter('Animation')" data-cat="Animation" class="cat-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-sky-50 border border-slate-200 transition cursor-pointer">
+                                ✨ Animation
+                            </button>
+                        </div>
+
+                        <div class="relative w-full md:w-72">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="searchInput" oninput="renderWorks()" placeholder="Cari judul Video Edit / Animation..." class="w-full pl-9 pr-4 py-2 rounded-full bg-white border border-slate-200 text-xs sm:text-sm font-medium focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100">
+                        </div>
+                    </div>
+
+                    <!-- BARIS C: Galeri Karya (Grid) atau Empty State Kosong -->
+                    <div class="w-full">
+                        <!-- Grid Kartu Karya -->
+                        <div id="worksGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                            <!-- Dirender secara dinamis oleh JS -->
+                        </div>
+
+                        <!-- Kotak Kosong Awal (0 Karya) -->
+                        <div id="emptyStateBox" class="w-full text-center py-14 px-4 rounded-2xl bg-gradient-to-b from-sky-50/80 to-white border-2 border-dashed border-sky-200 flex flex-col items-center justify-center gap-3">
+                            <div class="w-16 h-16 rounded-2xl bg-sky-100 text-sky-500 flex items-center justify-center text-2xl border-2 border-white shadow-sm">
+                                <i class="fa-solid fa-clapperboard"></i>
+                            </div>
+                            <h3 id="emptyTitle" class="font-game font-black text-lg sm:text-xl text-slate-700">
+                                Belum ada karya yang diposting oleh Trainer Ryan
+                            </h3>
+                            <p id="emptyDesc" class="text-xs sm:text-sm text-slate-500 max-w-md">
+                                Galeri direktori masih kosong. Nantikan karya video edit & animasi terbaru dari MTAnimators segera!
+                            </p>
+                            <div id="emptyAddBtnWrapper" class="hidden pt-2">
+                                <button onclick="openPostModal()" class="uma-btn inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 font-game font-extrabold text-xs sm:text-sm border-2 border-white cursor-pointer">
+                                    <i class="fa-solid fa-plus-circle"></i>
+                                    <span>+ Post Karya Pertama</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="uma-panel rounded-2xl px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-semibold text-slate-600 text-center sm:text-left mt-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span>© 2026 <strong>Torena Ryan (MTAnimators)</strong> — Tracen Academy Video Edit Portfolio</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <a href="http://www.youtube.com/@Trainer-Ryan" target="_blank" rel="noopener noreferrer" class="hover:text-red-600 transition"><i class="fa-brands fa-youtube mr-1"></i>YouTube</a>
+                        <a href="https://www.tiktok.com/@torena_ryan" target="_blank" rel="noopener noreferrer" class="hover:text-slate-900 transition"><i class="fa-brands fa-tiktok mr-1"></i>TikTok</a>
+                    </div>
+                </footer>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 3: SIMPAN & DOWNLOAD INDEX.HTML UNTUK GITHUB PAGES              -->
+    <!-- ===================================================================== -->
+    <div id="exportModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/65 backdrop-blur-sm" onclick="if(event.target===this) closeExportModal()">
+        <div class="bg-white rounded-3xl max-w-xl w-full border-4 border-slate-800 shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 flex items-center justify-between text-white">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-brands fa-github text-amber-300 text-xl"></i>
+                    <h3 class="font-game font-black text-base sm:text-lg">Update File index.html (GitHub Pages)</h3>
+                </div>
+                <button onclick="closeExportModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[82vh] overflow-y-auto">
+                <div class="text-xs text-slate-700 leading-relaxed bg-sky-50 border border-sky-200 rounded-2xl p-3.5 space-y-1.5">
+                    <p class="font-extrabold text-sky-900"><i class="fa-solid fa-circle-info mr-1"></i> Cara Update di GitHub Repository:</p>
+                    <ol class="list-decimal list-inside space-y-1 text-slate-600">
+                        <li>Pastikan file gambar asli berada di folder utama repo: <code class="bg-white px-1.5 py-0.5 rounded border text-slate-800 font-bold">Trainer Ryan.png</code>, <code class="bg-white px-1.5 py-0.5 rounded border text-slate-800 font-bold">Background TA.png</code>, dan <code class="bg-white px-1.5 py-0.5 rounded border text-slate-800 font-bold">Background TR.jpeg</code>.</li>
+                        <li>Klik <strong>Download index.html</strong> di bawah ini (seluruh karya baru & PIN sudah tertanam otomatis).</li>
+                        <li>Upload & timpa file <code class="bg-white px-1.5 py-0.5 rounded border text-slate-800 font-bold">index.html</code> di GitHub lalu <strong>Commit changes</strong>.</li>
+                    </ol>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Foto Profil</div>
+                        <div id="expStatAvatar" class="text-xs font-extrabold text-slate-800 mt-0.5">-</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Latar Intro</div>
+                        <div id="expStatHeroBg" class="text-xs font-extrabold text-slate-800 mt-0.5">-</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Latar Karya</div>
+                        <div id="expStatGalBg" class="text-xs font-extrabold text-slate-800 mt-0.5">-</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Total Karya</div>
+                        <div id="expStatWorks" class="text-xs font-extrabold text-sky-600 mt-0.5">0</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">Pratinjau Kode index.html</label>
+                        <span id="exportSizeLabel" class="text-[11px] font-bold text-slate-500">0 KB</span>
+                    </div>
+                    <textarea id="exportTextarea" readonly rows="4" class="w-full p-3 rounded-xl bg-slate-900 text-emerald-300 font-mono text-[11px] border-2 border-slate-700 focus:outline-none select-all"></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-1">
+                    <button type="button" onclick="copyHtmlCode()" class="uma-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-game font-extrabold bg-slate-100 hover:bg-slate-200 text-slate-800 border-2 border-slate-300 cursor-pointer inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Salin Kode</span>
+                    </button>
+                    <button type="button" onclick="downloadHtmlFile()" class="uma-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-game font-extrabold bg-gradient-to-r from-emerald-500 to-teal-600 text-white border-2 border-white cursor-pointer inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Download index.html</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 4: KONFIRMASI HAPUS KARYA                                       -->
+    <!-- ===================================================================== -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/65 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-sm w-full border-4 border-red-400 shadow-2xl p-6 text-center space-y-4">
+            <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="font-game font-black text-lg text-slate-800">Hapus Karya Ini?</h3>
+            <p class="text-xs text-slate-500 font-medium">Karya yang dihapus akan dikeluarkan dari direktori. Jangan lupa Export ulang kode jika dipasang di Google Sites.</p>
+            <div class="flex items-center justify-center gap-2.5">
+                <button onclick="closeDeleteModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Batal</button>
+                <button onclick="confirmDeleteWork()" class="uma-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-red-600 hover:bg-red-700 text-white border-2 border-white cursor-pointer">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 1: TRAINER LOGIN / SETUP PIN                                    -->
+    <!-- ===================================================================== -->
+    <div id="pinModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/65 backdrop-blur-sm" onclick="if(event.target===this) closePinModal()">
+        <div class="bg-white rounded-3xl max-w-sm w-full border-4 border-sky-400 shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-4 flex items-center justify-between text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-key text-amber-300"></i>
+                    <h3 id="pinModalTitle" class="font-game font-black text-base">Trainer Mode Login</h3>
+                </div>
+                <button onclick="closePinModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handlePinSubmit(event)" class="p-6 space-y-4">
+                <p id="pinModalDesc" class="text-xs text-slate-600 leading-relaxed">
+                    Masukkan PIN rahasia Torena Ryan untuk mengaktifkan mode kelola portofolio.
+                </p>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">PIN (4–6 Angka)</label>
+                    <input type="password" id="pinInput" inputmode="numeric" maxlength="6" pattern="\d{4,6}" required placeholder="••••" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-center font-game font-black text-xl tracking-[0.4em]">
+                </div>
+                <div id="pinConfirmGroup" class="hidden">
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Konfirmasi PIN</label>
+                    <input type="password" id="pinConfirmInput" inputmode="numeric" maxlength="6" placeholder="••••" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-center font-game font-black text-xl tracking-[0.4em]">
+                </div>
+                <p id="pinErrorMsg" class="hidden text-xs font-bold text-red-600 bg-red-50 border border-red-200 rounded-xl px-3 py-2 text-center"></p>
+                <div class="flex items-center justify-end gap-2 pt-1">
+                    <button type="button" onclick="closePinModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Batal</button>
+                    <button type="submit" id="pinSubmitBtn" class="uma-btn px-5 py-2 rounded-xl text-xs font-game font-extrabold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-white cursor-pointer">Buka Kunci</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- MODAL 2: POST KARYA BARU                                              -->
+    <!-- ===================================================================== -->
+    <div id="postModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/65 backdrop-blur-sm" onclick="if(event.target===this) closePostModal()">
+        <div class="bg-white rounded-3xl max-w-md w-full border-4 border-amber-400 shadow-2xl overflow-hidden">
+            <div class="bg-gradient-to-r from-amber-400 to-amber-500 px-6 py-4 flex items-center justify-between text-slate-900">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clapperboard text-slate-900"></i>
+                    <h3 class="font-game font-black text-base">Post Karya Baru</h3>
+                </div>
+                <button onclick="closePostModal()" class="w-8 h-8 rounded-full bg-black/10 hover:bg-black/20 flex items-center justify-center cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="postForm" onsubmit="handleAddWork(event)" class="p-6 space-y-3.5 max-h-[82vh] overflow-y-auto">
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Judul Karya *</label>
+                    <input type="text" id="workTitle" required placeholder="Contoh: Tokai Teio - Low Cortisol" class="w-full px-3.5 py-2 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-xs sm:text-sm font-semibold">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Kategori *</label>
+                        <select id="workCategory" class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-xs sm:text-sm font-bold bg-white">
+                            <option value="Video Edit">🎬 Video Edit</option>
+                            <option value="Animation">✨ Animation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Platform *</label>
+                        <select id="workPlatform" class="w-full px-3 py-2 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-xs sm:text-sm font-bold bg-white">
+                            <option value="YouTube Shorts">YouTube Shorts</option>
+                            <option value="TikTok">TikTok</option>
+                            <option value="YouTube & TikTok">YouTube & TikTok</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Link Video (YouTube / TikTok) *</label>
+                    <input type="url" id="workLink" required placeholder="https://www.youtube.com/shorts/..." class="w-full px-3.5 py-2 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-xs sm:text-sm">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Thumbnail (Upload Gambar)</label>
+                    <label class="w-full py-2.5 px-3 rounded-xl border-2 border-dashed border-sky-300 bg-sky-50/70 hover:bg-sky-100/70 text-sky-700 text-xs font-extrabold flex items-center justify-center gap-2 cursor-pointer transition">
+                        <i class="fa-solid fa-image"></i>
+                        <span>Pilih File Gambar Thumbnail</span>
+                        <input type="file" accept="image/*" class="hidden" onchange="handleThumbPreview(event)">
+                    </label>
+                    <div id="thumbPreviewWrap" class="hidden mt-2 relative w-28 h-36 mx-auto rounded-xl overflow-hidden border-2 border-sky-300 shadow-sm">
+                        <img id="thumbPreviewImg" src="" alt="Preview Thumbnail" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-extrabold text-slate-700 uppercase tracking-wider mb-1">Atau URL / Path Thumbnail (Opsional)</label>
+                    <input type="text" id="workThumbUrl" placeholder="./thumb-teio.jpg atau https://..." class="w-full px-3.5 py-2 rounded-xl border-2 border-slate-200 focus:border-sky-500 focus:outline-none text-xs">
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2">
+                    <button type="button" onclick="closePostModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Batal</button>
+                    <button type="submit" class="uma-btn px-5 py-2 rounded-xl text-xs font-game font-extrabold bg-gradient-to-r from-sky-500 to-blue-600 text-white border-2 border-white cursor-pointer">Posting Karya</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFIKASI                                                      -->
+    <!-- ===================================================================== -->
+    <div id="toastBox" class="fixed bottom-5 right-5 z-50 translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border-2 border-amber-400 flex items-center gap-2.5 text-xs font-extrabold">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+            <span id="toastText">Berhasil!</span>
+        </div>
+    </div>
+
+    <!-- Data Permanen Tertanam (Diperbarui otomatis saat Download/Export) -->
+    <script id="BAKED_PORTFOLIO_DATA" type="application/json">{"avatar":"./Trainer Ryan.png","heroBg":"./Background TA.png","galleryBg":"./Background TR.jpeg","ownerPin":null,"works":[]}</script>
+
+    <script>
+        const STORAGE_KEY = 'torena_ryan_uma_github_v1';
+        const DEFAULT_REPO_ASSETS = {
+            avatar: './Trainer Ryan.png',
+            heroBg: './Background TA.png',
+            galleryBg: './Background TR.jpeg'
+        };
+
+        let isTrainerMode = false;
+        let ownerPin = null;
+        let pinMode = 'login';
+        let activeCategory = 'All';
+        let tempThumbBase64 = '';
+        let deleteTargetId = null;
+
+        let portfolioState = {
+            avatar: DEFAULT_REPO_ASSETS.avatar,
+            heroBg: DEFAULT_REPO_ASSETS.heroBg,
+            galleryBg: DEFAULT_REPO_ASSETS.galleryBg,
+            works: []
+        };
+
+        // ---------------------------------------------------------------------
+        // 1. INISIALISASI & PENYIMPANAN (GITHUB PAGES + LOCAL REPO FALLBACK)
+        // ---------------------------------------------------------------------
+        function loadInitialState() {
+            let baked = {
+                avatar: DEFAULT_REPO_ASSETS.avatar,
+                heroBg: DEFAULT_REPO_ASSETS.heroBg,
+                galleryBg: DEFAULT_REPO_ASSETS.galleryBg,
+                ownerPin: null,
+                works: []
+            };
+            try {
+                const el = document.getElementById('BAKED_PORTFOLIO_DATA');
+                if (el && el.textContent.trim()) {
+                    const parsed = JSON.parse(el.textContent);
+                    baked = Object.assign(baked, parsed);
+                }
+            } catch (e) {}
+
+            let local = null;
+            try {
+                const raw = window.localStorage.getItem(STORAGE_KEY);
+                if (raw) local = JSON.parse(raw);
+            } catch (e) {}
+
+            const source = local || baked;
+            portfolioState.avatar = source.avatar !== undefined ? source.avatar : DEFAULT_REPO_ASSETS.avatar;
+            portfolioState.heroBg = source.heroBg !== undefined ? source.heroBg : DEFAULT_REPO_ASSETS.heroBg;
+            portfolioState.galleryBg = source.galleryBg !== undefined ? source.galleryBg : DEFAULT_REPO_ASSETS.galleryBg;
+            portfolioState.works = Array.isArray(source.works) ? source.works : [];
+            ownerPin = source.ownerPin || null;
+
+            renderVisualAssets();
+            renderWorks();
+        }
+
+        function saveState() {
+            const payload = {
+                avatar: portfolioState.avatar,
+                heroBg: portfolioState.heroBg,
+                galleryBg: portfolioState.galleryBg,
+                ownerPin: ownerPin,
+                works: portfolioState.works
+            };
+            const safeJson = JSON.stringify(payload).replace(/<\/script>/gi, '<\\/script>');
+            const bakedEl = document.getElementById('BAKED_PORTFOLIO_DATA');
+            if (bakedEl) bakedEl.textContent = safeJson;
+
+            try {
+                window.localStorage.setItem(STORAGE_KEY, safeJson);
+            } catch (e) {}
+        }
+
+        // ---------------------------------------------------------------------
+        // 2. RENDER AVATAR & DUA LATAR BELAKANG (AUTO-FALLBACK JIKA FILE BELUM ADA)
+        // ---------------------------------------------------------------------
+        function showBlankAvatarPlaceholder(avatarBox) {
+            avatarBox.className = 'w-full h-full rounded-2xl bg-slate-100 border-2 border-dashed border-sky-300 flex flex-col items-center justify-center text-slate-400 overflow-hidden p-2';
+            avatarBox.innerHTML = `
+                <i class="fa-solid fa-user-astronaut text-4xl sm:text-5xl text-sky-300 mb-2"></i>
+                <span class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Foto Profil Kosong</span>
+            `;
+        }
+
+        function applyBgWithFallback(layerEl, src) {
+            if (!src) {
+                layerEl.style.backgroundImage = 'none';
+                layerEl.classList.remove('opacity-100');
+                layerEl.classList.add('opacity-0');
+                return;
+            }
+            const probe = new Image();
+            probe.onload = () => {
+                layerEl.style.backgroundImage = `url("${src}")`;
+                layerEl.classList.remove('opacity-0');
+                layerEl.classList.add('opacity-100');
+            };
+            probe.onerror = () => {
+                layerEl.style.backgroundImage = 'none';
+                layerEl.classList.remove('opacity-100');
+                layerEl.classList.add('opacity-0');
+            };
+            probe.src = src;
+        }
+
+        function renderVisualAssets() {
+            // Avatar Profil (Default ./Trainer Ryan.png atau custom upload)
+            const avatarBox = document.getElementById('avatarBox');
+            const removeAvatarBtn = document.getElementById('removeAvatarBtn');
+            if (portfolioState.avatar) {
+                avatarBox.className = 'w-full h-full rounded-2xl bg-white flex items-center justify-center overflow-hidden';
+                const img = document.createElement('img');
+                img.src = portfolioState.avatar;
+                img.alt = 'Torena Ryan';
+                img.className = 'w-full h-full object-cover';
+                img.onerror = () => showBlankAvatarPlaceholder(avatarBox);
+                avatarBox.innerHTML = '';
+                avatarBox.appendChild(img);
+
+                if (isTrainerMode) removeAvatarBtn.classList.remove('hidden');
+                else removeAvatarBtn.classList.add('hidden');
+            } else {
+                showBlankAvatarPlaceholder(avatarBox);
+                removeAvatarBtn.classList.add('hidden');
+            }
+
+            // Latar Belakang 1: Pengenalan (Default ./Background TA.png - Soft Blur)
+            const heroBgLayer = document.getElementById('heroBgLayer');
+            const removeHeroBgBtn = document.getElementById('removeHeroBgBtn');
+            applyBgWithFallback(heroBgLayer, portfolioState.heroBg);
+            if (portfolioState.heroBg && isTrainerMode) removeHeroBgBtn.classList.remove('hidden');
+            else removeHeroBgBtn.classList.add('hidden');
+
+            // Latar Belakang 2: Hasil Karya (Default ./Background TR.jpeg - Crisp)
+            const galleryBgLayer = document.getElementById('galleryBgLayer');
+            const removeGalleryBgBtn = document.getElementById('removeGalleryBgBtn');
+            applyBgWithFallback(galleryBgLayer, portfolioState.galleryBg);
+            if (portfolioState.galleryBg && isTrainerMode) removeGalleryBgBtn.classList.remove('hidden');
+            else removeGalleryBgBtn.classList.add('hidden');
+        }
+
+        function compressImage(file, maxWidth = 1280, quality = 0.82) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width;
+                        let h = img.height;
+                        if (w > maxWidth) {
+                            h = Math.round((h * maxWidth) / w);
+                            w = maxWidth;
+                        }
+                        canvas.width = w;
+                        canvas.height = h;
+                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleImageUpload(event, key) {
+            if (!isTrainerMode) return;
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                const maxW = key === 'avatar' ? 500 : 1280;
+                portfolioState[key] = await compressImage(file, maxW, 0.82);
+                saveState();
+                renderVisualAssets();
+                showToast('Gambar berhasil dipasang!');
+            } catch (err) {
+                showToast('Gagal memuat gambar.');
+            } finally {
+                event.target.value = '';
+            }
+        }
+
+        function clearImageField(key) {
+            if (!isTrainerMode) return;
+            portfolioState[key] = '';
+            saveState();
+            renderVisualAssets();
+            showToast('Gambar dikosongkan.');
+        }
+
+        // ---------------------------------------------------------------------
+        // 3. TRAINER MODE & KEAMANAN PIN
+        // ---------------------------------------------------------------------
+        function handleTrainerLockClick() {
+            if (isTrainerMode) {
+                applyTrainerMode(false);
+                showToast('Mode Publik aktif.');
+                return;
+            }
+            openPinModal(ownerPin ? 'login' : 'setup');
+        }
+
+        function openPinModal(mode) {
+            pinMode = mode;
+            document.getElementById('pinInput').value = '';
+            document.getElementById('pinConfirmInput').value = '';
+            document.getElementById('pinErrorMsg').classList.add('hidden');
+
+            const titleEl = document.getElementById('pinModalTitle');
+            const descEl = document.getElementById('pinModalDesc');
+            const confirmGroup = document.getElementById('pinConfirmGroup');
+            const submitBtn = document.getElementById('pinSubmitBtn');
+
+            if (mode === 'setup') {
+                titleEl.textContent = 'Buat PIN Trainer Baru';
+                descEl.textContent = 'Buat PIN rahasia (4–6 angka) agar hanya kamu yang bisa mengubah profil, latar belakang, dan posting karya.';
+                confirmGroup.classList.remove('hidden');
+                submitBtn.textContent = 'Simpan & Masuk';
+            } else if (mode === 'change') {
+                titleEl.textContent = 'Ubah PIN Trainer';
+                descEl.textContent = 'Masukkan PIN baru (4–6 angka) untuk keamanan akun pemilik.';
+                confirmGroup.classList.remove('hidden');
+                submitBtn.textContent = 'Perbarui PIN';
+            } else {
+                titleEl.textContent = 'Trainer Mode Login';
+                descEl.textContent = 'Masukkan PIN rahasia Torena Ryan untuk mengaktifkan mode kelola portofolio.';
+                confirmGroup.classList.add('hidden');
+                submitBtn.textContent = 'Buka Kunci';
+            }
+
+            const modal = document.getElementById('pinModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => document.getElementById('pinInput').focus(), 80);
+        }
+
+        function closePinModal() {
+            const modal = document.getElementById('pinModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handlePinSubmit(event) {
+            event.preventDefault();
+            const pin = document.getElementById('pinInput').value.trim();
+            const confirmPin = document.getElementById('pinConfirmInput').value.trim();
+            const errEl = document.getElementById('pinErrorMsg');
+
+            if (!/^\d{4,6}$/.test(pin)) {
+                errEl.textContent = 'PIN harus berupa 4 sampai 6 digit angka.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            if (pinMode === 'setup' || pinMode === 'change') {
+                if (pin !== confirmPin) {
+                    errEl.textContent = 'Konfirmasi PIN tidak sama.';
+                    errEl.classList.remove('hidden');
+                    return;
+                }
+                ownerPin = pin;
+                saveState();
+                closePinModal();
+                applyTrainerMode(true);
+                showToast('PIN disimpan! Trainer Mode aktif.');
+            } else {
+                if (pin === ownerPin) {
+                    closePinModal();
+                    applyTrainerMode(true);
+                    showToast('Selamat datang, Torena Ryan!');
+                } else {
+                    errEl.textContent = 'PIN salah!';
+                    errEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        function applyTrainerMode(active) {
+            isTrainerMode = active;
+            const lockBtn = document.getElementById('trainerLockBtn');
+            const lockIcon = document.getElementById('trainerLockIcon');
+            const lockLabel = document.getElementById('trainerLockLabel');
+            const statusBadge = document.getElementById('statusBadge');
+
+            const toggleFlexIds = ['heroBgControls', 'galleryBgControls', 'trainerActionToolbar', 'avatarControls'];
+            const emptyAddBtnWrapper = document.getElementById('emptyAddBtnWrapper');
+
+            if (active) {
+                lockBtn.className = 'px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 transition cursor-pointer flex items-center gap-1.5';
+                lockIcon.className = 'fa-solid fa-lock-open text-emerald-600';
+                lockLabel.textContent = 'Trainer Mode Active';
+                statusBadge.textContent = 'Trainer Edit Mode';
+
+                toggleFlexIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    el.classList.remove('hidden');
+                    el.classList.add('flex');
+                });
+                emptyAddBtnWrapper.classList.remove('hidden');
+            } else {
+                lockBtn.className = 'px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-700 border border-slate-300 transition cursor-pointer flex items-center gap-1.5';
+                lockIcon.className = 'fa-solid fa-lock text-slate-500';
+                lockLabel.textContent = 'Trainer Login';
+                statusBadge.textContent = 'Public Showcase';
+
+                toggleFlexIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                });
+                emptyAddBtnWrapper.classList.add('hidden');
+            }
+
+            renderVisualAssets();
+            renderWorks();
+        }
+
+        // ---------------------------------------------------------------------
+        // 4. KELOLA HASIL KARYA (POST, FILTER, & HAPUS)
+        // ---------------------------------------------------------------------
+        function openPostModal() {
+            if (!isTrainerMode) return;
+            tempThumbBase64 = '';
+            document.getElementById('postForm').reset();
+            document.getElementById('thumbPreviewWrap').classList.add('hidden');
+            const modal = document.getElementById('postModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePostModal() {
+            const modal = document.getElementById('postModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        async function handleThumbPreview(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                tempThumbBase64 = await compressImage(file, 640, 0.8);
+                document.getElementById('thumbPreviewImg').src = tempThumbBase64;
+                document.getElementById('thumbPreviewWrap').classList.remove('hidden');
+            } catch (e) {
+                showToast('Gagal memproses thumbnail.');
+            }
+        }
+
+        function handleAddWork(event) {
+            event.preventDefault();
+            if (!isTrainerMode) return;
+
+            const title = document.getElementById('workTitle').value.trim();
+            const category = document.getElementById('workCategory').value;
+            const platform = document.getElementById('workPlatform').value;
+            const link = document.getElementById('workLink').value.trim();
+            const thumbUrl = document.getElementById('workThumbUrl').value.trim();
+
+            portfolioState.works.unshift({
+                id: 'w_' + Date.now(),
+                title,
+                category,
+                platform,
+                link,
+                thumbnail: tempThumbBase64 || thumbUrl || ''
+            });
+
+            saveState();
+            renderWorks();
+            closePostModal();
+            showToast(`Karya "${title}" berhasil ditambahkan!`);
+        }
+
+        function promptDeleteWork(id) {
+            if (!isTrainerMode) return;
+            deleteTargetId = id;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            deleteTargetId = null;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function confirmDeleteWork() {
+            if (!isTrainerMode || !deleteTargetId) return;
+            portfolioState.works = portfolioState.works.filter(item => item.id !== deleteTargetId);
+            saveState();
+            renderWorks();
+            closeDeleteModal();
+            showToast('Karya dihapus.');
+        }
+
+        function setCategoryFilter(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = 'cat-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold bg-sky-500 text-white shadow-sm transition cursor-pointer';
+                } else {
+                    btn.className = 'cat-btn shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-bold bg-white text-slate-600 hover:bg-sky-50 border border-slate-200 transition cursor-pointer';
+                }
+            });
+            renderWorks();
+        }
+
+        function getCategoryLabel(cat) {
+            return cat === 'Animation' ? '✨ Animation' : '🎬 Video Edit';
+        }
+
+        function buildDefaultThumbnail(work) {
+            const safeTitle = escapeHtml(work.title);
+            const label = getCategoryLabel(work.category);
+            return `
+                <div class="w-full h-full bg-gradient-to-br from-sky-500 via-blue-600 to-indigo-700 p-4 flex flex-col justify-between text-white select-none">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-0.5 rounded-md bg-black/30 text-[10px] font-extrabold border border-white/25">${label}</span>
+                        <span class="w-7 h-7 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center shadow">
+                            <i class="fa-solid fa-play text-[10px] ml-0.5"></i>
+                        </span>
+                    </div>
+                    <h4 class="font-game font-black text-lg leading-tight text-center line-clamp-3 drop-shadow">${safeTitle}</h4>
+                    <div class="flex items-center justify-between text-[10px] font-bold text-white/85 border-t border-white/20 pt-2">
+                        <span>MTAnimators</span>
+                        <span>Tracen Div.</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderWorks() {
+            const grid = document.getElementById('worksGrid');
+            const emptyBox = document.getElementById('emptyStateBox');
+            const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+
+            document.getElementById('countAll').textContent = portfolioState.works.length;
+            document.getElementById('statTotalWorks').textContent = portfolioState.works.length;
+
+            const filtered = portfolioState.works.filter(work => {
+                const matchCat = activeCategory === 'All' || work.category === activeCategory;
+                const matchSearch = !query ||
+                    (work.title || '').toLowerCase().includes(query) ||
+                    (work.category || '').toLowerCase().includes(query);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyBox.classList.remove('hidden');
+                if (portfolioState.works.length === 0) {
+                    document.getElementById('emptyTitle').textContent = 'Belum ada karya yang diposting oleh Trainer Ryan';
+                    document.getElementById('emptyDesc').textContent = 'Galeri direktori masih kosong. Nantikan karya video edit & animasi terbaru dari MTAnimators segera!';
+                } else {
+                    document.getElementById('emptyTitle').textContent = 'Karya tidak ditemukan';
+                    document.getElementById('emptyDesc').textContent = 'Coba kata kunci pencarian lain atau pilih tab Semua.';
+                }
+                return;
+            }
+
+            emptyBox.classList.add('hidden');
+            grid.innerHTML = filtered.map(work => {
+                const thumbMarkup = work.thumbnail
+                    ? `<img src="${escapeHtml(work.thumbnail)}" alt="${escapeHtml(work.title)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                       <div style="display:none;" class="w-full h-full">${buildDefaultThumbnail(work)}</div>`
+                    : buildDefaultThumbnail(work);
+
+                const delBtn = isTrainerMode
+                    ? `<button data-trainer-only="1" onclick="promptDeleteWork('${work.id}')" title="Hapus Karya" class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white shadow border-2 border-white flex items-center justify-center cursor-pointer">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                       </button>`
+                    : '';
+
+                const platformIcon = (work.platform || '').toLowerCase().includes('tiktok')
+                    ? '<i class="fa-brands fa-tiktok text-slate-800 mr-1"></i>'
+                    : '<i class="fa-brands fa-youtube text-red-600 mr-1"></i>';
+
+                return `
+                    <article class="uma-work-card group">
+                        <div class="relative aspect-[4/5] w-full bg-slate-100 overflow-hidden">
+                            ${delBtn}
+                            ${thumbMarkup}
+                            <div class="absolute bottom-2.5 left-0 z-10 uma-ribbon bg-slate-900/85 text-amber-300 font-game font-extrabold text-[11px] pl-3 pr-4 py-1 shadow">
+                                ${getCategoryLabel(work.category)}
+                            </div>
+                        </div>
+                        <div class="p-4 bg-white flex-grow flex flex-col justify-between gap-3">
+                            <div>
+                                <div class="text-[11px] font-extrabold text-sky-600 uppercase tracking-wide flex items-center">
+                                    ${platformIcon}
+                                    <span class="truncate">${escapeHtml(work.platform || 'YouTube / TikTok')}</span>
+                                </div>
+                                <h3 class="font-game font-black text-base text-slate-800 group-hover:text-sky-600 transition line-clamp-2 mt-1 leading-snug">
+                                    ${escapeHtml(work.title)}
+                                </h3>
+                            </div>
+                            <a href="${escapeHtml(work.link)}" target="_blank" rel="noopener noreferrer" class="uma-btn w-full bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-game font-extrabold text-xs py-2.5 px-3 rounded-xl border-2 border-white flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-play text-[10px]"></i>
+                                <span>Tonton Video</span>
+                            </a>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // ---------------------------------------------------------------------
+        // 5. EXPORT SELF-CONTAINED HTML (UNTUK GOOGLE SITES)
+        // ---------------------------------------------------------------------
+        function buildSelfContainedHtml() {
+            const clone = document.documentElement.cloneNode(true);
+
+            // Pastikan hasil export dalam mode publik (Trainer Mode terkunci)
+            const lockBtn = clone.querySelector('#trainerLockBtn');
+            const lockIcon = clone.querySelector('#trainerLockIcon');
+            const lockLabel = clone.querySelector('#trainerLockLabel');
+            const statusBadge = clone.querySelector('#statusBadge');
+            if (lockBtn) lockBtn.className = 'px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-700 border border-slate-300 transition cursor-pointer flex items-center gap-1.5';
+            if (lockIcon) lockIcon.className = 'fa-solid fa-lock text-slate-500';
+            if (lockLabel) lockLabel.textContent = 'Trainer Login';
+            if (statusBadge) statusBadge.textContent = 'Public Showcase';
+
+            ['heroBgControls', 'galleryBgControls', 'trainerActionToolbar', 'avatarControls', 'emptyAddBtnWrapper', 'removeAvatarBtn', 'removeHeroBgBtn', 'removeGalleryBgBtn'].forEach(id => {
+                const el = clone.querySelector('#' + id);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+            });
+
+            ['pinModal', 'postModal', 'exportModal', 'deleteModal'].forEach(id => {
+                const m = clone.querySelector('#' + id);
+                if (m) {
+                    m.classList.add('hidden');
+                    m.classList.remove('flex');
+                }
+            });
+
+            clone.querySelectorAll('[data-trainer-only]').forEach(el => el.remove());
+
+            const payload = {
+                avatar: portfolioState.avatar || '',
+                heroBg: portfolioState.heroBg || '',
+                galleryBg: portfolioState.galleryBg || '',
+                ownerPin: ownerPin || null,
+                works: portfolioState.works || []
+            };
+            const bakedScript = clone.querySelector('#BAKED_PORTFOLIO_DATA');
+            if (bakedScript) {
+                bakedScript.textContent = JSON.stringify(payload).replace(/<\/script>/gi, '<\\/script>');
+            }
+
+            return '<!DOCTYPE html>\n' + clone.outerHTML;
+        }
+
+        function openExportModal() {
+            if (!isTrainerMode) return;
+            const describeAsset = (val, defName) => {
+                if (!val) return 'Kosong';
+                if (val === defName) return defName.replace('./', '') + ' ✓';
+                return 'Custom Upload ✓';
+            };
+            document.getElementById('expStatAvatar').textContent = describeAsset(portfolioState.avatar, DEFAULT_REPO_ASSETS.avatar);
+            document.getElementById('expStatHeroBg').textContent = describeAsset(portfolioState.heroBg, DEFAULT_REPO_ASSETS.heroBg);
+            document.getElementById('expStatGalBg').textContent = describeAsset(portfolioState.galleryBg, DEFAULT_REPO_ASSETS.galleryBg);
+            document.getElementById('expStatWorks').textContent = portfolioState.works.length + ' Karya';
+
+            const htmlStr = buildSelfContainedHtml();
+            document.getElementById('exportTextarea').value = htmlStr;
+            const kb = Math.round(new Blob([htmlStr]).size / 1024);
+            document.getElementById('exportSizeLabel').textContent = `${kb} KB`;
+
+            const modal = document.getElementById('exportModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeExportModal() {
+            const modal = document.getElementById('exportModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function copyHtmlCode() {
+            const textarea = document.getElementById('exportTextarea');
+            textarea.focus();
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Kode index.html berhasil disalin!');
+            } catch (e) {
+                showToast('Tekan Ctrl+C untuk menyalin kode.');
+            }
+        }
+
+        function downloadHtmlFile() {
+            const htmlStr = document.getElementById('exportTextarea').value || buildSelfContainedHtml();
+            const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('File index.html berhasil diunduh!');
+        }
+
+        // ---------------------------------------------------------------------
+        // 6. UTILITAS
+        // ---------------------------------------------------------------------
+        function showToast(msg) {
+            const box = document.getElementById('toastBox');
+            document.getElementById('toastText').textContent = msg;
+            box.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => box.classList.add('translate-y-24', 'opacity-0'), 3400);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        window.addEventListener('DOMContentLoaded', loadInitialState);
+    </script>
+</body>
+</html>
